@@ -5,6 +5,9 @@ greet-gen:
 greet-gen-grpc:
 	protoc greet/greetpb/greet.proto  --go_out=plugins=grpc:greet/greetpb 
 
+run-greet-server:
+	go run greet/greet_server/server.go
+
 push:
 	git push origin HEAD
 
