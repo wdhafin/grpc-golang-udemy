@@ -23,6 +23,10 @@ message FindMaximumRequest { int32 number = 1; }
 
 message FindMaximumResponse { int32 maximum = 1; }
 
+message SquareRootRequest { int32 number = 1; }
+
+message SquareRootResponse { double number_root = 1; }
+
 service CalculatorService {
   // Unary
   rpc Sum(SumRequest) returns (SumResponse) {};
@@ -35,4 +39,9 @@ service CalculatorService {
 
   rpc FindMaximum(stream FindMaximumRequest)
       returns (stream FindMaximumResponse) {};
+
+  // error handling
+  // this RPL will throw an exception if the sent number is negative
+  // The error being sent is of type INVALID_ARGUMENT
+  rpc SquareRoot(SquareRootRequest) returns (SquareRootResponse) {};
 }
