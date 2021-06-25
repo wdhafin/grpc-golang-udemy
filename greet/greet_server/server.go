@@ -11,6 +11,8 @@ import (
 
 	"github.com/wdhafin/grpc-golang-udemy/greet/greetpb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type server struct{}
@@ -80,6 +82,24 @@ func (s *server) GreetEveryone(stream greetpb.GreetService_GreetEveryoneServer) 
 			return err
 		}
 	}
+}
+
+func (s *server) GreetWithDeadline(ctx context.Context, req *greetpb.GreetRequestWithDeadline) (*greetpb.GreetResponseWithDeadline, error) {
+	fmt.Printf("GreetWithDeadline function was invoked %v\n", req)
+	for i := 0; i < 3; i++ {
+		if ctx.Err() == context.Canceled {
+			fmt.Println("the client cancel the request")
+			return nil, status.Error(codes.Canceled, "the client canceled the request")
+		}
+		time.Sleep(time.Second)
+	}
+	firstName := req.GetGreeting().GetFirstName()
+	result := "Hello " + firstName
+	res := &greetpb.GreetResponseWithDeadline{
+		Result: result,
+	}
+
+	return res, nil
 }
 
 func main() {
