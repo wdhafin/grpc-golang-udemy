@@ -1,1 +1,1 @@
-# Golang GRPC Udemy (Stephen Maarek)
+# Golang GRPC
